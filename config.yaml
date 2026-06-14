@@ -1,0 +1,52 @@
+# Configuration for Ultimate Proxy Collector
+
+app_name: "Ultimate Proxy Collector"
+app_version: "1.0.0"
+
+# Maximum concurrent tasks (1-5000)
+max_concurrent_tasks: 100
+timeout_seconds: 10
+
+# Logging configuration
+log_level: "INFO"
+log_format: "json"
+
+# Proxy sources - Add your sources here
+sources:
+  # Example: GitHub raw proxy list
+  - name: "github-proxy-list"
+    url: "https://raw.githubusercontent.com/clarketm/proxy-list/master/proxy-list-raw.txt"
+    type: "regex_text"
+    enabled: true
+    priority: 5
+    extraction_config:
+      pattern: "(\\d{1,3}\\\\.\\d{1,3}\\\\.\\d{1,3}\\\\.\\d{1,3}):(\\d+)"
+    requests_per_minute: 60
+
+# Validator configuration
+validators:
+  enable_liveliness: true
+  enable_protocol_detection: true
+  enable_anonymity_check: true
+  enable_latency_testing: true
+  enable_geolocation: true
+  min_quality_score: 50
+
+# Deduplication configuration
+deduplication:
+  use_early_aggregator: true
+  use_bloom_filter: true
+  use_redis: false
+  redis_host: "localhost"
+  redis_port: 6379
+  redis_db: 0
+
+# Export configuration
+export:
+  output_dir: "outputs"
+  export_formats:
+    - txt
+    - json
+    - csv
+    - grouped
+  enable_grouped_export: true
